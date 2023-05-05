@@ -1,0 +1,48 @@
+{
+  "name": "@mavvy/mgql",
+  "version": "0.0.1",
+  "description": "Apollo Graphql and Mongoose.",
+  "main": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@types/jest": "~27.5",
+    "@types/node": "~16",
+    "@types/ramda": "^0.28.15",
+    "@typescript-eslint/eslint-plugin": "~5.26",
+    "@typescript-eslint/parser": "~5.26",
+    "eslint": "~8.16",
+    "eslint-config-prettier": "~8.5",
+    "eslint-plugin-jest": "~26.2",
+    "jest": "~28.1",
+    "mongoose": "6.10.5",
+    "prettier": "~2.6",
+    "ramda": "^0.28.0",
+    "rimraf": "~3.0",
+    "rollup-plugin-dts": "^5.3.0",
+    "ts-jest": "~28.0",
+    "tslib": "~2.4",
+    "tsutils": "~3.21",
+    "typescript": "5.0.3"
+  },
+  "scripts": {
+    "start": "node build/src/main.js",
+    "clean": "rimraf coverage build tmp",
+    "prebuild": "npm run lint",
+    "build": "npm run rollup",
+    "build:watch": "tsc -w -p tsconfig.json",
+    "build:release": "npm run clean && tsc -p tsconfig.prod.json",
+    "lint": "eslint . --ext .ts --ext .mts",
+    "test": "jest --coverage --silent",
+    "prettier": "prettier --config .prettierrc --write .",
+    "test:watch": "jest --watch",
+    "rollup": "npm run clean && rollup -c"
+  },
+  "author": "Marc Jeric Espiritu",
+  "license": "Apache-2.0",
+  "peerDependencies": {
+    "mongoose": "6.10.5"
+  }
+}
