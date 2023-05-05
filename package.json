@@ -41,6 +41,9 @@
     "rollup": "npm run clean && rollup -c"
   },
   "author": "Marc Jeric Espiritu",
+  "repository": {
+    "url": "https://github.com/mavvy22/mgql"
+  },
   "license": "Apache-2.0",
   "peerDependencies": {
     "mongoose": "6.10.5"
