@@ -16,6 +16,10 @@ export const dbConnect = async (uri: string) => {
   return conn;
 };
 
+/**
+ * Remove keys prefixed with "_". Those fields are considered to be
+ * used only on graphql schema creation.
+ */
 export const cleanSchema = (data: ModelItem[]) => {
   const handler = (obj: unknown) => {
     const omits = (Object.keys(obj) || []).filter((d) => d[0] === '_');
@@ -23,6 +27,11 @@ export const cleanSchema = (data: ModelItem[]) => {
 
     return Object.entries(filtered).reduce((c, n) => {
       const [k, v] = n;
+
+      /**
+       * If the value is an Object or an Array, internal
+       * values should be checked.
+       */
       if (typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length) {
         return {
           ...c,
@@ -59,6 +68,8 @@ export const initModels = (models: ModelItem[]) => {
       const schema = new mongoose.Schema(
         {
           deletedAt: Date,
+          createdAt: Date,
+          updatedAt: Date,
           isDeleted: Boolean,
           ...(d.fields as any),
         },
