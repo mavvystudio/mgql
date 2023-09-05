@@ -43,7 +43,6 @@ const main = async () => {
     resolvers,
     models,
   );
-  console.log(schema.typeDefs);
 
   const server = new ApolloServer({
     typeDefs: schema.typeDefs,
