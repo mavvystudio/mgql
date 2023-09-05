@@ -2,8 +2,7 @@ import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import * as mgql from '@mavvy/mgql';
 
-const uri =
-  'mongodb+srv://foouser:baruser@mavvy0.r9ulaq6.mongodb.net/dashboard';
+const uri = process.env.MONGO_URI;
 const models = [
   {
     name: 'Book',
