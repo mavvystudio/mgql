@@ -2,6 +2,14 @@ import mongoose from 'mongoose';
 
 import { modelsToSchema, toTypeDefs, toSchema } from '../src/model-to-schema';
 
+const defaultTypeDefs = `createdAt: Float
+updatedAt: Float
+deletedAt: Float
+isDeleted: Boolean`;
+
+const addDefaults = (data: string) => `${data}
+${defaultTypeDefs}`;
+
 const models = [
   {
     name: null,
@@ -51,13 +59,11 @@ const models = [
       },
       publisher: {
         _gql: 'Publisher',
-        // _isObject: true,
         name: String,
         id: mongoose.Schema.Types.ObjectId,
       },
       editor: {
         _gql: 'Editor',
-        // _isObject: true,
         _override: true,
         name: String,
         position: {
@@ -66,7 +72,6 @@ const models = [
       },
       author: {
         _gql: 'Author',
-        // _isObject: true,
         name: String,
         id: mongoose.Schema.Types.ObjectId,
       },
@@ -82,7 +87,6 @@ const models = [
           date: Date,
           user: {
             _gql: 'User',
-            // _isObject: true,
             name: String,
             id: mongoose.Schema.Types.ObjectId,
           },
@@ -94,40 +98,54 @@ const models = [
 describe('model-to-schema function', () => {
   it('should generate gql schema', () => {
     const res = modelsToSchema(models);
+    expect(res.find((d) => d.key === 'User')).toBeTruthy();
     expect(res.length).toEqual(7);
 
     expect(res[0].key).toEqual('Editor');
-    expect(res[0].value).toEqual(`
-name: String`);
+    expect(res[0].value).toEqual(
+      addDefaults(`
+name: String`),
+    );
 
     expect(res[1].key).toEqual('Author');
-    expect(res[1].value).toEqual(`
+    expect(res[1].value).toEqual(
+      addDefaults(`
 name: String
-birthday: String`);
+birthday: String`),
+    );
 
     expect(res[2].key).toEqual('Publisher');
-    expect(res[2].value).toEqual(`
+    expect(res[2].value).toEqual(
+      addDefaults(`
 name: String
-id: ID`);
+id: ID`),
+    );
 
     expect(res[3].key).toEqual('Editor');
-    expect(res[3].value).toEqual(`
+    expect(res[3].value).toEqual(
+      addDefaults(`
 name: String
-position: String`);
+position: String`),
+    );
 
     expect(res[4].key).toEqual('User');
-    expect(res[4].value).toEqual(`
+    expect(res[4].value).toEqual(
+      addDefaults(`
 name: String
-id: ID`);
+id: ID`),
+    );
 
     expect(res[5].key).toEqual('Comment');
-    expect(res[5].value).toEqual(`
+    expect(res[5].value).toEqual(
+      addDefaults(`
 body: String
 date: String
-user: User`);
+user: User`),
+    );
 
     expect(res[6].key).toEqual('Book');
-    expect(res[6].value).toEqual(`
+    expect(res[6].value).toEqual(
+      addDefaults(`
 title: String
 version: Int
 publisher: Publisher
@@ -135,7 +153,8 @@ editor: Editor
 author: Author
 isActive: Boolean
 price: Float
-comments: [Comment]`);
+comments: [Comment]`),
+    );
   });
 
   it('should convert to typedefs', () => {
@@ -157,8 +176,10 @@ comments: [Comment]`);
 
     expect(res).toEqual(`
 type foo {position: String
+  id: ID
 }
 type bar {name: String
+  id: ID
 }`);
   });
 
@@ -175,7 +196,8 @@ type bar {name: String
     const res = toSchema(models);
     expect(res).toEqual(`
 type User {
-name: String
+name: String${addDefaults('')}
+  id: ID
 }`);
   });
 });

@@ -38,13 +38,7 @@ export type ModelSchemaField = {
   [k: string]: any;
 };
 
-const modelSchemaDefaultFields = [
-  '_gql',
-  '_hidden',
-  // '_isObject',
-  '_omit',
-  '_override',
-];
+const modelSchemaDefaultFields = ['_gql', '_hidden', '_omit', '_override'];
 const mongooseSchemaFields = [
   'alias',
   'default',
@@ -71,9 +65,17 @@ const mongooseSchemaFields = [
   'validate',
 ];
 
-const isObject = (item: { [k: string]: any }) => {
-  return Boolean(Object.entries(item).length);
+const addDefaults = (model: ModelItem) => {
+  return {
+    ...model.fields,
+    createdAt: mongoose.Schema.Types.Decimal128,
+    updatedAt: mongoose.Schema.Types.Decimal128,
+    deletedAt: mongoose.Schema.Types.Decimal128,
+    isDeleted: Boolean,
+  };
 };
+const isObject = (item: { [k: string]: any }) =>
+  Boolean(Object.entries(item).length);
 
 const transformSchemaType = (fieldType: unknown) => {
   if (R.equals(String, fieldType)) {
@@ -118,6 +120,7 @@ const shouldAdd = (
   items: ModelSchemaItem[],
 ) => {
   const isExisting = items.find((d) => d.key === name);
+
   if (['String', 'Int', 'ID', 'Boolean'].includes(name)) {
     return false;
   }
@@ -147,16 +150,18 @@ const handler = (name: string, fields: any, data: ModelSchemaItem[] = []) => {
 
     if (Array.isArray(v)) {
       const arrayItem = v[0];
+
       handler(
         removeArrSymbol(arrayItem._gql),
-        getPureSchemaFields(arrayItem),
+        getPureSchemaFields(addDefaults({ fields: arrayItem })),
         data,
       );
       return `${c}
 ${k}: ${arrayItem._gql || transformSchemaType(arrayItem.type || arrayItem)}`;
     }
     if (v._gql && isObject(pureSchemaObj)) {
-      shouldAdd(v._gql, v, data) && handler(v._gql, pureSchemaObj, data);
+      shouldAdd(v._gql, v, data) &&
+        handler(v._gql, addDefaults({ fields: pureSchemaObj }), data);
       return `${c}
 ${k}: ${v._gql}`;
     }
@@ -173,18 +178,6 @@ ${k}: ${schemaType}`;
   data.push({ key: name, value: fieldValue });
 
   return data;
-};
-const addDefaults = (model: ModelItem) => {
-  if (((model.mongooseSchemaOptions as any) || {}).timestamps) {
-    return {
-      ...model.fields,
-      createdAt: mongoose.Schema.Types.Decimal128,
-      updatedAt: mongoose.Schema.Types.Decimal128,
-      deletedAt: mongoose.Schema.Types.Decimal128,
-      isDeleted: Boolean,
-    };
-  }
-  return model.fields;
 };
 
 const createSchemaFromModelItem = (

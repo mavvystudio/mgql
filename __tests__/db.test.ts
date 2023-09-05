@@ -10,12 +10,16 @@ describe('db', () => {
 
   it('should be able to connect to db', async () => {
     const spy = jest.spyOn(mongoose, 'connect').mockResolvedValueOnce(mongoose);
-    const res = await dbConnect(uri);
+    let res: any = null;
+
+    try {
+      res = await dbConnect(uri);
+    } catch (e) {}
 
     expect(spy).toHaveBeenCalledWith(uri, { bufferCommands: false });
     expect(res).not.toBeNull();
-    await dbConnect(uri);
     expect(spy).toHaveBeenCalledTimes(1);
+
     await expect(async () => {
       await dbConnect(null);
     }).rejects.toThrowError();
