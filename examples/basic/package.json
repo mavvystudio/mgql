@@ -16,6 +16,7 @@
     "@apollo/server": "^4.9.3",
     "@mavvy/mgql": "workspace:^",
     "@types/node": "^20.5.9",
+    "dotenv": "^16.3.1",
     "graphql": "^16.6.0",
     "mongoose": "6.10.5",
     "ramda": "^0.28.0",
