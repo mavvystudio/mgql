@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "Apollo Graphql and Mongoose.",
   "main": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "type": "module",
   "types": "dist/index.d.ts",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.1.0",
