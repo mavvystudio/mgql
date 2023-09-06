@@ -19,7 +19,6 @@
     "dotenv": "^16.3.1",
     "graphql": "^16.6.0",
     "mongoose": "6.10.5",
-    "ramda": "^0.28.0",
     "typescript": "^5.2.2"
   }
 }

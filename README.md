@@ -1,5 +1,7 @@
 # Mongoose + Graphql + Apollo all in one
 
+Creating graphql server just got easier
+
 ## Getting Started
 
 ### Installation
@@ -21,7 +23,7 @@ import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import * as mgql from '@mavvy/mgql';
 
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGO_URI as string;
 const models = [
   {
     name: 'Book',
@@ -35,14 +37,14 @@ const resolvers = [
     name: 'books',
     model: 'Book',
     resolverType: 'Query',
-    handler: () => {},
+    handler: async ({ model }) => model().find(),
     returnType: '[Book]',
   },
   {
     name: 'addBook',
     model: 'Book',
     resolverType: 'Mutation',
-    handler: () => {},
+    handler: ({ actions, input }) => actions.create(input),
     inputVariable: 'NameInput',
     returnType: 'Book',
   },
@@ -75,7 +77,6 @@ const main = async () => {
 };
 
 main();
-
 ```
 
 ### API
