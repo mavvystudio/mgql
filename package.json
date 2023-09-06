@@ -1,10 +1,10 @@
 {
   "name": "@mavvy/mgql",
   "version": "0.1.0",
+  "type": "module",
   "description": "Apollo Graphql and Mongoose.",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
-  "type": "module",
   "types": "dist/index.d.ts",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.1.0",
@@ -36,14 +36,11 @@
     "start": "node build/src/main.js",
     "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
-    "build": "npm run rollup",
-    "build:watch": "tsc -w -p tsconfig.json",
-    "build:release": "npm run clean && tsc -p tsconfig.prod.json",
     "lint": "eslint . --ext .ts --ext .mts",
     "test": "jest --coverage --silent",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch",
-    "rollup": "npm run clean && rollup -c"
+    "build": "npm run clean && rollup -c"
   },
   "author": "Marc Jeric Espiritu",
   "repository": {
