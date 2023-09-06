@@ -64,6 +64,7 @@ const mongooseSchemaFields = [
   'type',
   'validate',
 ];
+const allDefaultFields = [...modelSchemaDefaultFields, ...mongooseSchemaFields];
 
 const addDefaults = (model: ModelItem) => {
   return {
@@ -105,11 +106,7 @@ const transformSchemaType = (fieldType: unknown) => {
 const getPureSchemaFields = (fields: ModelSchemaField) => {
   const omit = R.defaultTo([], fields._omit);
 
-  const omitFields = [
-    ...modelSchemaDefaultFields,
-    ...mongooseSchemaFields,
-    ...omit,
-  ];
+  const omitFields = [...allDefaultFields, ...omit];
   const obj = R.omit(omitFields, fields);
   return obj;
 };
@@ -144,7 +141,15 @@ const handler = (name: string, fields: any, data: ModelSchemaItem[] = []) => {
     const [k, v] = n;
     const pureSchemaObj = getPureSchemaFields(v);
 
-    if (v._hidden === true) {
+    if (v._hidden) {
+      return c;
+    }
+
+    if (fields._omit && fields._omit.find((d: string) => d === k)) {
+      return c;
+    }
+
+    if (allDefaultFields.find((d: string) => k === d)) {
       return c;
     }
 
@@ -153,7 +158,7 @@ const handler = (name: string, fields: any, data: ModelSchemaItem[] = []) => {
 
       handler(
         removeArrSymbol(arrayItem._gql),
-        getPureSchemaFields(addDefaults({ fields: arrayItem })),
+        addDefaults({ fields: arrayItem }),
         data,
       );
       return `${c}
@@ -161,7 +166,7 @@ ${k}: ${arrayItem._gql || transformSchemaType(arrayItem.type || arrayItem)}`;
     }
     if (v._gql && isObject(pureSchemaObj)) {
       shouldAdd(v._gql, v, data) &&
-        handler(v._gql, addDefaults({ fields: pureSchemaObj }), data);
+        handler(v._gql, addDefaults({ fields: v }), data);
       return `${c}
 ${k}: ${v._gql}`;
     }
@@ -185,7 +190,7 @@ const createSchemaFromModelItem = (
   models: ModelSchemaItem[],
 ) => {
   const fields = addDefaults(model);
-  handler(model.name, getPureSchemaFields(fields), models);
+  handler(model.name, fields, models);
 };
 
 export const toTypeDefs = (items: { key: string; value: string }[]) => {
