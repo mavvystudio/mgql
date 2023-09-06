@@ -6,38 +6,85 @@ import * as mgql from '@mavvy/mgql';
 const uri = process.env.MONGO_URI as string;
 const models = [
   {
-    name: 'Book',
+    name: 'Comment',
     fields: {
-      name: String,
+      body: String,
+      date: Date,
+    },
+  },
+  {
+    name: 'Blog',
+    fields: {
+      title: String, // String is shorthand for {type: String}
+      author: String,
+      body: String,
+      comments: [
+        {
+          _gql: '[Comment]',
+          body: String,
+          date: Date,
+        },
+      ],
+      hidden: Boolean,
+      meta: {
+        _gql: 'Meta',
+        votes: Number,
+        favs: Number,
+      },
     },
   },
 ];
 const resolvers = [
   {
-    name: 'books',
-    model: 'Book',
+    name: 'blogs',
+    model: 'Blog',
     resolverType: 'Query',
     handler: async ({ model }) => model().find(),
-    returnType: '[Book]',
+    returnType: '[Blog]',
   },
   {
-    name: 'addBook',
-    model: 'Book',
+    name: 'addBlog',
+    model: 'Blog',
     resolverType: 'Mutation',
     handler: ({ actions, input }) => actions.create(input),
-    inputVariable: 'NameInput',
-    returnType: 'Book',
+    inputVariable: 'CreateBlogInput!',
+    returnType: 'Blog',
+  },
+  {
+    name: 'addComment',
+    model: 'Comment',
+    resolverType: 'Mutation',
+    inputVariable: 'AddCommentInput!',
+    handler: async ({ model, actions, input }) => {
+      const blogModel = model('Blog');
+      const blog = await blogModel.findById(input.blogId);
+      const comment = await actions.create({ body: input.body });
+
+      blog.comments.push(comment);
+
+      await blog.save();
+
+      return comment;
+    },
+    returnType: 'Comment',
   },
 ] as mgql.MgqlResolvers[];
 
-const appSchema = `input NameInput {
-  name: String!
+const appSchema = `input CreateBlogInput {
+  title: String!
+  author: String!
+  body: String!
+}
+
+input AddCommentInput {
+  blogId: ID!
+  body: String!
 }`;
 
 const main = async () => {
+  const modelSchema = mgql.toSchema(models);
   await mgql.initDb({ uri, models });
 
-  const modelSchema = mgql.toSchema(models);
   const schema = mgql.createSchema(
     [appSchema].concat(modelSchema),
     resolvers,
