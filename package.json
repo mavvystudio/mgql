@@ -1,6 +1,6 @@
 {
   "name": "@mavvy/mgql",
-  "version": "0.2.0",
+  "version": "0.0.0-development",
   "type": "module",
   "description": "Apollo Graphql and Mongoose.",
   "main": "dist/esm/index.js",
@@ -27,7 +27,8 @@
     "ts-jest": "~29.1.1",
     "tslib": "~2.4",
     "tsutils": "~3.21",
-    "typescript": "5.0.3"
+    "typescript": "5.0.3",
+    "semantic-release": "^21.1.1"
   },
   "peerDependencies": {
     "mongoose": "6.10.5"
@@ -40,7 +41,8 @@
     "test": "jest --coverage --silent",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch",
-    "build": "npm run clean && rollup -c"
+    "build": "npm run clean && rollup -c",
+    "semantic-release": "semantic-release"
   },
   "author": "Marc Jeric Espiritu",
   "repository": {
