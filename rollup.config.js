@@ -1,9 +1,3 @@
-/**
-const common = require('@rollup/plugin-commonjs');
-const resolve = require('@rollup/plugin-node-resolve');
-const dts = require('rollup-plugin-dts');
-const typescript = require('@rollup/plugin-typescript');
-*/
 import common from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import dts from 'rollup-plugin-dts';
