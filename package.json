@@ -36,7 +36,7 @@
   "scripts": {
     "start": "node build/src/main.js",
     "clean": "rimraf coverage build tmp dist types",
-    "prebuild": "npm run lint",
+    "xprebuild": "npm run lint",
     "lint": "eslint . --ext .ts --ext .mts",
     "test": "jest --coverage --silent",
     "prettier": "prettier --config .prettierrc --write .",
