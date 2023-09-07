@@ -28,6 +28,8 @@
     "tslib": "~2.4",
     "tsutils": "~3.21",
     "typescript": "5.0.3",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "semantic-release": "^21.1.1"
   },
   "peerDependencies": {
@@ -42,9 +44,7 @@
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch",
     "build": "npm run clean && rollup -c",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "semantic-release": "^21.0.2"
+    "semantic-release": "semantic-release"
   },
   "author": "Marc Jeric Espiritu",
   "repository": {
