@@ -1,6 +1,6 @@
 {
   "name": "@mavvy/mgql",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "type": "module",
   "description": "Apollo Graphql and Mongoose.",
   "main": "dist/esm/index.js",
