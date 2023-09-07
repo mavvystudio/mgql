@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import { omit } from 'ramda';
 import mongoose from 'mongoose';
 
 import type { ModelItem, InitDbConfig } from './types';
@@ -23,7 +23,7 @@ export const dbConnect = async (uri: string) => {
 export const cleanSchema = (data: ModelItem[]) => {
   const handler = (obj: unknown) => {
     const omits = (Object.keys(obj) || []).filter((d) => d[0] === '_');
-    const filtered = R.omit(omits, obj);
+    const filtered = omit(omits, obj);
 
     return Object.entries(filtered).reduce((c, n) => {
       const [k, v] = n;

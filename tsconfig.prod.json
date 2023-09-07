@@ -5,7 +5,7 @@
     "removeComments": true,
     "outDir": "dist",
     "rootDir": "./src",
-    "emitDeclarationOnly": true, 
+    "emitDeclarationOnly": false, 
     "declaration": true,
     "declarationDir": "types"
   },

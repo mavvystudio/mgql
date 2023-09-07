@@ -1,13 +1,13 @@
-import * as R from 'ramda';
+import { is, flatten, values } from 'ramda';
 
 export const generateKeywords = (items: string[]) => {
-  return R.flatten(
+  return flatten(
     items.map((item: string | Object) => {
       if (item && typeof item === 'string') {
         return item.split(' ');
       }
-      if (R.is(Object, item)) {
-        return R.values(item as any) as any;
+      if (is(Object, item)) {
+        return values(item as any) as any;
       }
 
       return [];

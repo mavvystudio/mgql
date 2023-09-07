@@ -25,12 +25,12 @@ export default [
       },
     ],
     plugins: [
-      common(),
       resolve(),
       typescript({ tsconfig: './tsconfig.prod.json' }),
+      common({ extensions: ['.js', '.ts'] }),
     ],
     // ADD THIS:
-    external: ['mongoose', 'ramda'],
+    external: ['mongoose'],
   },
   {
     input: 'dist/esm/types/index.d.ts',

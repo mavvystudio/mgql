@@ -1,5 +1,5 @@
+import { flatten, assoc, pick, values } from 'ramda';
 import mongoose from 'mongoose';
-import * as R from 'ramda';
 
 import { ModelItem, ActionOptions, SearchOptions } from './types';
 import { generateKeywords } from './utils';
@@ -20,10 +20,8 @@ const createKeyWords = (
   if (!keywordOption.enabled) {
     return data;
   }
-  const keywords = generateKeywords(
-    R.values(R.pick(keywordOption.value, data)),
-  );
-  return R.assoc('keywords', keywords, data);
+  const keywords = generateKeywords(values(pick(keywordOption.value, data)));
+  return assoc('keywords', keywords, data);
 };
 
 const createActionData = (options: ActionOptions, props: Props) => {
@@ -43,7 +41,7 @@ const createSearchQuery = (search: string, query: any) => {
     return query;
   }
   const str = search.split(',').map((item) => item.toLowerCase().trim());
-  const searchValue = R.flatten(str.map((item) => item.split(' ')));
+  const searchValue = flatten(str.map((item) => item.split(' ')));
 
   return {
     ...(query || {}),

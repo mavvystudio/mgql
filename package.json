@@ -34,13 +34,14 @@
   },
   "scripts": {
     "start": "node build/src/main.js",
-    "clean": "rimraf coverage build tmp",
+    "clean": "rimraf coverage build tmp dist types",
     "prebuild": "npm run lint",
     "lint": "eslint . --ext .ts --ext .mts",
     "test": "jest --coverage --silent",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch",
-    "build": "npm run clean && rollup -c"
+    "build": "npm run clean && rollup -c",
+    "build:release": "npm run clean && tsc -p tsconfig.prod.json"
   },
   "author": "Marc Jeric Espiritu",
   "repository": {

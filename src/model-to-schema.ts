@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import { equals, defaultTo, omit } from 'ramda';
 import mongoose from 'mongoose';
 
 import type { ModelItem } from './types';
@@ -79,35 +79,35 @@ const isObject = (item: { [k: string]: any }) =>
   Boolean(Object.entries(item).length);
 
 const transformSchemaType = (fieldType: unknown) => {
-  if (R.equals(String, fieldType)) {
+  if (equals(String, fieldType)) {
     return 'String';
   }
-  if (R.equals(Number, fieldType)) {
+  if (equals(Number, fieldType)) {
     return 'Int';
   }
-  if (R.equals(Boolean, fieldType) || fieldType === 'Bool') {
+  if (equals(Boolean, fieldType) || fieldType === 'Bool') {
     return 'Boolean';
   }
   if (
-    R.equals(mongoose.Schema.Types.ObjectId, fieldType) ||
+    equals(mongoose.Schema.Types.ObjectId, fieldType) ||
     fieldType === 'Oid'
   ) {
     return 'ID';
   }
-  if (R.equals(mongoose.Schema.Types.Decimal128, fieldType)) {
+  if (equals(mongoose.Schema.Types.Decimal128, fieldType)) {
     return 'Float';
   }
-  if (R.equals(Date, fieldType)) {
+  if (equals(Date, fieldType)) {
     return 'String';
   }
   return 'String';
 };
 
 const getPureSchemaFields = (fields: ModelSchemaField) => {
-  const omit = R.defaultTo([], fields._omit);
+  const o = defaultTo([], fields._omit);
 
-  const omitFields = [...allDefaultFields, ...omit];
-  const obj = R.omit(omitFields, fields);
+  const omitFields = [...allDefaultFields, ...o];
+  const obj = omit(omitFields, fields);
   return obj;
 };
 
