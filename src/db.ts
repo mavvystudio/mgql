@@ -1,4 +1,5 @@
 import { omit } from 'ramda';
+
 import mongoose from 'mongoose';
 
 import type { ModelItem, InitDbConfig } from './types';
