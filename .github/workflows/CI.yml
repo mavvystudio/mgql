@@ -16,7 +16,9 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm run build
+      - name: Build
+        run: npm run build
+      - name: Release
         run: npx semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
