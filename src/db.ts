@@ -53,7 +53,7 @@ export const cleanSchema = (data: ModelItem[]) => {
   data.map((item) => {
     if (item.fields) {
       const fields = handler(item.fields);
-      item.fields = fields;
+      item.mongodbFields = fields;
     }
     return item;
   });
@@ -71,7 +71,7 @@ export const initModels = (models: ModelItem[]) => {
           createdAt: Date,
           updatedAt: Date,
           isDeleted: Boolean,
-          ...(d.fields as any),
+          ...(d.mongodbFields as any),
         },
         {
           timestamps: true,

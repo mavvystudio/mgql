@@ -51,6 +51,7 @@ export type ModelItem = {
   disableGql?: boolean;
   name?: string;
   fields: ModelField;
+  mongodbFields?: Object;
   mongooseSchemaOptions?: Object;
   runOptions?: ({ schema }: { schema: mongoose.Schema }) => void;
 
