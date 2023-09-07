@@ -40,8 +40,7 @@
     "test": "jest --coverage --silent",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch",
-    "build": "npm run clean && rollup -c",
-    "build:release": "npm run clean && tsc -p tsconfig.prod.json"
+    "build": "npm run clean && rollup -c"
   },
   "author": "Marc Jeric Espiritu",
   "repository": {
