@@ -212,6 +212,124 @@ main();
 |name|string|name of the mongoose schema|
 |fields|object|properties of the schema. The shape of the documents within that collection|
 
+##### Model Field Item Attributes
+
+###### _gql: string
+Graphql schema to apply to the field item
+```javascript
+{
+  name: 'Blog',
+  fields: {
+    author: {
+      _gql: 'Author',
+      name: String
+    }
+  }
+}
+```
+will generate:
+```bash
+type Author {
+  name: String
+}
+type Blog {
+  author: Author
+}
+```
+
+###### _hidden: boolean
+Will not generate a gql schema for that field item
+```javascript
+{
+  name: 'Blog',
+  fields: {
+    title: String,
+    author: {
+      _gql: 'Author',
+      _hidden: true,
+      name: String
+    }
+  }
+}
+```
+will generate:
+```bash
+type Blog {
+  title: String
+}
+```
+###### _omit: string[]
+will not generate gql fields which are listed on the _omit field
+```javascript
+{
+  name: 'Blog',
+  fields: {
+    author: {
+      _gql: 'Author',
+      _omit: ['foo', 'bar'],
+      name: String
+      foo: String
+      bar: String
+    }
+  }
+}
+```
+will generate:
+```bash
+type Author {
+  name: String
+}
+type Blog {
+  author: Author
+}
+```
+###### _override: boolean
+
+Nested objects will automatically generate a schema type. If you don't want to override the schema type, set _override to true
+
+```javascript
+[
+  {
+    name: 'User',
+    fields: {
+      name: String
+    }
+  },
+  {
+    name: 'Project',
+    fields: {
+      todo: {
+        _gql: 'Todo',
+        user: {
+          _gql: 'User',
+          _override: true,
+          nickname: String
+        },
+        tag: {
+          _gql: 'Tag',
+          name: String
+        }
+      }
+    }
+  }
+]
+```
+Will generate gql schema:
+```bash
+type User {
+  nickname: String
+}
+type Tag {
+  name: String
+}
+type Todo {
+  user: User
+  tag: Tag
+}
+type Project {
+  todo: Todo
+}
+```
 
 #### Resolvers
 
@@ -239,3 +357,4 @@ A resolver item is a configuration to create a Query or Mutation (Subscriptions 
 |input|shorthand to return the value from variables.input|
 |model|(name?: string) => mongoose.Model . the default name is the model name value from the resolver|
 |actions|actions.create is use to add data to db. actions.search is use to find data from the db|
+
