@@ -69,6 +69,15 @@ describe('db', () => {
     expect(res[0]).toEqual({
       name: 'foo',
       fields: {
+        _gql: 'Foo',
+        name: {
+          _gql: 'PersonName',
+          firstName: String,
+          middleName: String,
+          lastName: String,
+        },
+      },
+      mongodbFields: {
         name: {
           firstName: String,
           middleName: String,
@@ -80,6 +89,14 @@ describe('db', () => {
     expect(res[1]).toEqual({
       name: 'bar',
       fields: {
+        _override: true,
+        _gql: 'Bar',
+        address: {
+          _gql: 'Address',
+          line1: String,
+        },
+      },
+      mongodbFields: {
         address: {
           line1: String,
         },
