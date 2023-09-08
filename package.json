@@ -7,6 +7,10 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
   "files": ["src", "dist"],
+  "exports": {
+    "./src/": "./src/",
+    "./dist/": "./dist/"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
