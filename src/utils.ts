@@ -2,7 +2,7 @@ import { is, flatten, values } from 'ramda';
 
 export const generateKeywords = (items: string[]) => {
   return flatten(
-    items.map((item: string | Object) => {
+    items.map((item: string | any) => {
       if (item && typeof item === 'string') {
         return item.split(' ');
       }

@@ -15,6 +15,83 @@ npm install @mavvy/mgql @apollo/server mongoose graphql
 ### Example
 see examples directory [examples](/examples)
 
+### What is MGql?
+Basically it generates mongoose schema and graphql schema at the same time from a model array data. Also, it helps create resolvers with additional helpers that has automatic integration to the database.
+
+
+#### Object model to mongoose and graphql schema
+This will be transformed into a mongoose and graphql schema
+```javascript
+[
+  {
+    name: 'Comment',
+    fields: {
+      body: String,
+      date: Date,
+    },
+  },
+  {
+    name: 'Blog',
+    fields: {
+      title: String, // String is shorthand for {type: String}
+      author: String,
+      body: String,
+      comments: [
+        {
+          _gql: '[Comment]',
+          body: String,
+          date: Date,
+        },
+      ],
+      hidden: Boolean,
+      meta: {
+        _gql: 'Meta',
+        votes: Number,
+        favs: Number,
+      },
+    },
+  },
+]
+
+```
+the above code will create this gql schema below:
+```bash
+type Comment {
+  body: String
+  date: String
+  createdAt: Float
+  updatedAt: Float
+  deletedAt: Float
+  isDeleted: Boolean
+  id: ID
+}
+
+type Meta {
+  votes: Int
+  favs: Int
+  createdAt: Float
+  updatedAt: Float
+  deletedAt: Float
+  isDeleted: Boolean
+  id: ID
+}
+
+type Blog {
+  title: String
+  author: String
+  body: String
+  comments: [Comment]
+  hidden: Boolean
+  meta: Meta
+  createdAt: Float
+  updatedAt: Float
+  deletedAt: Float
+  isDeleted: Boolean
+  id: ID
+}
+
+```
+And then will create mongoose schema for ***Comment*** and  ***Blog***
 ### Usage
 
 ```javascript
@@ -150,15 +227,15 @@ A resolver item is a configuration to create a Query or Mutation (Subscriptions 
 |inputVariable|string?|Schema name of the input|
 |disabled|boolean?|disables the resolver|
 |roles|string[]?|array of roles that is authorized to use the resolver|
-|handler|Function|the main resolver function|
+|handler|(handlerArgs) => any|the main resolver function|
 
-##### handler args object
+##### handlerArgs object
 |key|description|
 |---|-----------|
-|parentContext||
-|variables||
-|context||
-|options||
-|input||
-|model||
-|actions||
+|parentContext|resolver.parentContext param from apolo|
+|variables|resolver.variables param from apollo|
+|context|resolver.context param from apollo|
+|options|resolver options such as model name, returnType, etc.|
+|input|shorthand to return the value from variables.input|
+|model|(name?: string) => mongoose.Model . the default name is the model name value from the resolver|
+|actions|actions.create is use to add data to db. actions.search is use to find data from the db|
