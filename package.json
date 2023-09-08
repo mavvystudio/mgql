@@ -1,12 +1,15 @@
 {
   "name": "@mavvy/mgql",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "Apollo Graphql and Mongoose.",
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["src", "dist"],
+  "files": [
+    "src",
+    "dist"
+  ],
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
