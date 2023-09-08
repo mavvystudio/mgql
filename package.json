@@ -6,14 +6,6 @@
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "src",
-    "dist"
-  ],
-  "exports": {
-    "./src/": "./src/",
-    "./dist/": "./dist/"
-  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
@@ -71,7 +63,7 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
+      ["@semantic-release/npm", { "pkgRoot": "./dist" }],
       [
         "@semantic-release/git",
         {
