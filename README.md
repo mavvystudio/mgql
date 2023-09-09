@@ -15,6 +15,8 @@ npm install @mavvy/mgql @apollo/server mongoose graphql
 ### Example
 see examples directory [examples](/examples)
 
+Or check the [Code Sandbox example](https://codesandbox.io/p/sandbox/weathered-hill-ywqtnj)
+
 ### What is MGql?
 Basically it generates mongoose schema and graphql schema at the same time from a model array data. Also, it helps create resolvers with additional helpers that has automatic integration to the database.
 
